@@ -13,8 +13,17 @@ int main(int argc,char **argv)
     int RemotePort=0;
     int sockfd;  
     int err,n;  
+    int mode;
+    char mode_c;
+
     struct sockaddr_in addr_ser;  
     char sendline[20],recvline[20];  
+
+    printf("Input Mode:(1=send,2=rec)");  
+    scanf("%c",&mode_c); 
+
+    mode=asctohex(mode_c);
+    printf("mode=%d\n",mode);
       
     sockfd=socket(AF_INET,SOCK_STREAM,0);  
     if(sockfd==-1)  
@@ -44,17 +53,30 @@ int main(int argc,char **argv)
       
     while(1)  
     {  
-        printf("Input your words:");  
-        scanf("%s",&sendline);  
+	switch(mode)
+	{
+		case 1:
+			//printf("Input your words:");  
+        		//scanf("%s",&sendline);  
           
-        send(sockfd,sendline,strlen(sendline),0);  
+        		//send(sockfd,sendline,strlen(sendline),0);  
+			send(sockfd,"ABCDEFG",7,0);
+			usleep(500000);
+		break;
+		case 2:
+			//printf("waiting for server...\n");  
       
-        printf("waiting for server...\n");  
-      
-        n=recv(sockfd,recvline,100,0);  
-        recvline[n]='\0';  
+        		n=recv(sockfd,recvline,100,0);  
+        		recvline[n]='\0';  
           
-        printf("recv data is:%s\n",recvline);  
+        		printf("recv data is:%s\n",recvline);  
+		break;
+		default:
+		break;	
+	}
+        
+      
+        
     }  
       
       

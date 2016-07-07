@@ -19,9 +19,17 @@ int main(int argc,char **argv)
     int ser_sockfd,cli_sockfd;  
     int err,n;  
     int addlen;  
+    int mode;
+    char mode_c;
     struct sockaddr_in ser_addr;  
     struct sockaddr_in cli_addr;  
     char recvline[200],sendline[200];  
+
+    printf("Input Mode:(1=rec,2=send)");  
+    scanf("%c",&mode_c); 
+
+    mode=asctohex(mode_c);
+    printf("mode=%d\n",mode);
       
     ser_sockfd=socket(AF_INET,SOCK_STREAM,0);  
     if(ser_sockfd==-1)  
@@ -67,19 +75,30 @@ int main(int argc,char **argv)
 	printf("%d\n",ntohs(cli_addr.sin_port));
         while(1)  
         {  
-            printf("waiting for client...\n");  
-            n=recv(cli_sockfd,recvline,1024,0);  
-            if(n==-1)  
-            {  
-                printf("recv error\n");  
-            }  
-            recvline[n]='\0';  
+		switch(mode)
+		{
+			case 1:
+				//printf("waiting for client...\n");  
+            			n=recv(cli_sockfd,recvline,1024,0);  
+            			if(n==-1)  
+            			{  
+                			printf("recv error\n");  
+           			}		  
+            			recvline[n]='\0';  
               
-            printf("recv data is:%s\n",recvline);  
-              
-            printf("Input your words:");  
-            scanf("%s",&sendline);  
-            send(cli_sockfd,sendline,strlen(sendline),0);  
+            			printf("recv data is:%s\n",recvline);  
+			break;
+			case 2:
+				//printf("Input your words:");  
+            			//scanf("%s",&sendline);  
+            			//send(cli_sockfd,sendline,strlen(sendline),0);
+
+				send(cli_sockfd,"1234567",7,0);
+				usleep(500000);
+			break;
+			default:
+			break;
+		}
         }  
         close(cli_sockfd);  
     }  
