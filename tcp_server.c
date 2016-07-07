@@ -33,7 +33,7 @@ int main(int argc,char **argv)
 	printf("Input Listen Port:");  
       scanf("%s",&ServerPorts); 
 
-	 ServerPort=strtoint(ServerPorts);
+	ServerPort=strtoint(ServerPorts);
 	printf("ServerPort=%d\n",ServerPort);
       
     bzero(&ser_addr,sizeof(ser_addr));  
@@ -64,6 +64,7 @@ int main(int argc,char **argv)
         {  
             printf("accept error\n");  
         }  
+	printf("%d\n",ntohs(cli_addr.sin_port));
         while(1)  
         {  
             printf("waiting for client...\n");  
