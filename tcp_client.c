@@ -5,9 +5,12 @@
 #include<sys/types.h>  
 #include<unistd.h>  
 #include<netinet/in.h>  
+#include "exch.h"
 #define PORT 6666  
 int main(int argc,char **argv)  
 {  
+    unsigned char RemotePorts[10];
+    int RemotePort=0;
     int sockfd;  
     int err,n;  
     struct sockaddr_in addr_ser;  
@@ -19,11 +22,17 @@ int main(int argc,char **argv)
         printf("socket error\n");  
         return -1;  
     }  
+
+    printf("Input Connect Port:");  
+    scanf("%s",&RemotePorts); 
+
+    RemotePort=strtoint(RemotePorts);
+    printf("RemotePort=%d\n",RemotePort);
       
     bzero(&addr_ser,sizeof(addr_ser));  
     addr_ser.sin_family=AF_INET;  
     addr_ser.sin_addr.s_addr=htonl(INADDR_ANY);  
-    addr_ser.sin_port=htons(PORT);  
+    addr_ser.sin_port=htons(RemotePort);  
     err=connect(sockfd,(struct sockaddr *)&addr_ser,sizeof(addr_ser));  
     if(err==-1)  
     {  
